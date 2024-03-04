@@ -24,7 +24,7 @@ class Profile(models.Model):
     email = models.EmailField(max_length=254, null=True, blank=True, verbose_name='E-mail') 
 
     #outros campos
-    profile_img = models.ImageField(upload_to='static/profile_img', blank=True, null=True, verbose_name='Profile Image') 
+    profile_img = models.ImageField(upload_to='profile_img', blank=True, null=True, verbose_name='Profile Image') 
     birth = models.DateField(null=True, blank=True, verbose_name='Data de nascimento')
     phone_number = models.CharField(max_length=19, null=True, blank=True, verbose_name='Número de Telefone')
     gender = models.CharField(max_length=20, choices=Genders, null=True, blank=True, verbose_name='Gênero')

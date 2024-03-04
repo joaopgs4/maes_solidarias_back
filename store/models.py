@@ -17,6 +17,7 @@ class Product(models.Model):
     description = models.TextField(blank=True, null=True)
     price = models.FloatField()
     stock = models.IntegerField()
+    total_sold = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
     image = models.ImageField(upload_to="store_products", blank=True, null=True)
 
