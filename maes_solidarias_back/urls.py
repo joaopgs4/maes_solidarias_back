@@ -22,5 +22,5 @@ urlpatterns = [
 ]
 
 urlpatterns = [
-    path('bazar/', include('store.urls')),
+    path('bazar', include('store.urls')),
 ]
