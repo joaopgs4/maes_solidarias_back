@@ -31,6 +31,9 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    #Jazzmin TEM que ser o primeiro app
+    'jazzmin',
+
     'store.apps.StoreConfig',
     'access.apps.AccessConfig',
     'django.contrib.admin',
