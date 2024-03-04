@@ -24,3 +24,4 @@ urlpatterns = [
 urlpatterns = [
     path('bazar', include('store.urls')),
 ]
+
