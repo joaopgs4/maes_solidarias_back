@@ -9,6 +9,7 @@ class Profile(models.Model):
     Genders = (
         ('Masculino', 'Masculino'),
         ('Feminino', 'Feminino'),
+        ('Prefiro não informar', 'Prefiro não informar'),
         ('Outro', 'Outro'),
     )
     User_types = (
