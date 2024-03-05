@@ -36,6 +36,7 @@ INSTALLED_APPS = [
 
     'store.apps.StoreConfig',
     'access.apps.AccessConfig',
+    'events.apps.EventsConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
