@@ -16,19 +16,12 @@ def categoria(request):
             if not nome:  
                 return JsonResponse({'erro': 'O campo nome é obrigatório'}, status=400)
             Category.objects.create(name=nome) 
-            return JsonResponse({'mensagem': 'Categoria criada com sucesso'}, status=201)
+            return JsonResponse({'mensagem': f'Categoria {nome} criada com sucesso'}, status=201)
         
         elif request.method == 'GET':
             categorias = Category.objects.all()
             nomes_das_categorias = [categoria.name for categoria in categorias]
             return JsonResponse({'nomes': nomes_das_categorias})
-        
-        elif request.method == 'DELETE':
-            data = json.loads(request.body.decode('utf-8'))
-            nome = data.get('nome')
-            categoria = Category.objects.get(name=nome)
-            categoria.delete()
-            return JsonResponse({'mensagem': 'Categoria deletada com sucesso'}, status=200)
         
     except Category.DoesNotExist:
         return JsonResponse({'erro': 'Categoria não encontrada'}, status=404)
@@ -45,33 +38,26 @@ def items(request):
     try:
         if request.method == 'POST':
             data = json.loads(request.body.decode('utf-8'))
-            nome = data.get('nome')
-            descricao = data.get('descricao')
-            preco = data.get('preco')
-            estoque = data.get('estoque')
-            total_vendido = data.get('total_vendido')
-            categoria = data.get('categoria')
-            if not nome:
-                return JsonResponse({'erro': 'O campo nome é obrigatório'}, status=400)
-            if not descricao:
-                return JsonResponse({'erro': 'O campo descricao é obrigatório'}, status=400)
-            if not preco:
-                return JsonResponse({'erro': 'O campo preco é obrigatório'}, status=400)
-            if estoque is None:
-                return JsonResponse({'erro': 'O campo estoque é obrigatório'}, status=400)
-            category = Category.objects.get(name=categoria)
 
-            produto = Product.objects.create(
-                name=nome, description=descricao, price=preco, stock=estoque,
-                total_sold=total_vendido, category=category
+            #Verifica valiez da informações
+            valido = verifica_validez_produto(data)
+            if valido == "Invalido por Categoria":
+                return JsonResponse({'Informações Invalidas': f'A categoria inserida não é valida.'})
+            elif valido == "Invalido por Campos":
+                return JsonResponse({'Informações Faltando': 'Campos obrigatórios não foram preenchidos'}, status=400)
+
+            Product.objects.create(
+                name=data['nome'], description=data['descricao'], price=data['preco'], stock=data['estoque'],
+                total_sold=0, category=Category.objects.get(name=data['categoria'])
             )
 
-            return JsonResponse({'mensagem': 'Produto criado com sucesso'}, status=201)
+            return JsonResponse({'mensagem': f'Produto {data["nome"]} criado com sucesso'}, status=201)
 
         elif request.method == 'GET':
             produtos = Product.objects.all()
             
             lista_de_produtos = [{
+                'id': produto.id,
                 'nome': produto.name,
                 'descricao': produto.description,
                 'preco': produto.price,
@@ -79,47 +65,11 @@ def items(request):
                 'total_vendido': produto.total_sold,
                 'categoria': produto.category.name
             } for produto in produtos]
+            lista_de_produtos = sorted(lista_de_produtos, key=lambda x: x['id'])
+
             
             return JsonResponse({'produtos': lista_de_produtos})
 
-        elif request.method == 'DELETE':
-            data = json.loads(request.body.decode('utf-8'))
-            nome = data.get('nome')
-            produto = Product.objects.get(name=nome)
-            produto.delete()
-            return JsonResponse({'mensagem': 'Produto deletado com sucesso'}, status=200)
-        elif request.method == 'PUT':
-                data = json.loads(request.body.decode('utf-8'))
-                nome = data.get('nome')
-                
-                # Verificar se o produto existe
-                produto = Product.objects.get(name=nome)
-                
-                # Atualizar os campos com os dados fornecidos, se estiverem presentes na requisição
-                descricao = data.get('descricao')
-                if descricao is not None:
-                    produto.description = descricao
-                novo_nome = data.get('novo_nome')
-                if novo_nome is not None:
-                    produto.name = novo_nome
-                
-                preco = data.get('preco')
-                if preco is not None:
-                    produto.price = preco
-                
-                estoque = data.get('estoque')
-                if estoque is not None:
-                    produto.stock = estoque
-                
-                total_vendido = data.get('total_vendido')
-                if total_vendido is not None:
-                    produto.total_sold = total_vendido
-                
-                categoria = data.get('categoria')
-                if categoria is not None:
-                    produto.category = Category.objects.get(name=categoria)
-                produto.save()
-                return JsonResponse({'mensagem': 'Produto atualizado com sucesso'}, status=200)
     except Product.DoesNotExist:
         return JsonResponse({'erro': 'Produto não encontrado'}, status=404)
     except Category.DoesNotExist:
@@ -130,3 +80,57 @@ def items(request):
         return JsonResponse({'erro': f'Campo {e} faltando'}, status=400)
     except Exception as e:
         return JsonResponse({'erro': str(e)}, status=500)
+
+@csrf_exempt
+def items_id(request, id):
+    try:
+        if request.method == 'GET':
+            produto = Product.objects.get(id=id)
+            resp = {
+                'id': produto.id,
+                'nome': produto.name,
+                'descricao': produto.description,
+                'preco': produto.price,
+                'estoque': produto.stock,
+                'total_vendido': produto.total_sold,
+                'categoria': produto.category.name
+            }
+            return JsonResponse({'Produto': resp})
+        
+        if request.method == 'PUT':
+            produto = Product.objects.get(id=id)
+            data = json.loads(request.body.decode('utf-8'))
+
+            #Verifica valiez da informações
+            valido = verifica_validez_produto(data)
+            if valido == "Invalido por Categoria":
+                return JsonResponse({'Informações Invalidas': f'A categoria inserida não é valida.'})
+            elif valido == "Invalido por Campos":
+                return JsonResponse({'Informações Faltando': 'Campos obrigatórios não foram preenchidos'}, status=400)
+            
+            for field in vars(produto):
+                if field in data:
+                    setattr(produto, field, data[field])
+                produto.save()
+            return JsonResponse({'Produto': f"Produto de ID {id} foi editado com sucesso"})
+
+        if request.method == 'DELETE':
+            produto = Product.objects.get(id=id)
+            produto.delete()
+            return JsonResponse({'Produto': f"Produto de ID {id} foi deletado"})
+
+
+    except Exception as e:
+        return JsonResponse({'erro': str(e)}, status=500)
+        
+
+#Função auxiliar para deixar o código mais clean
+def verifica_validez_produto(data):
+    obrigatory_fields = ['nome', 'descricao', 'preco', 'estoque', 'categoria']
+    if any(field not in data for field in obrigatory_fields):
+        return "Invalido por Campos"
+
+    categorias = Category.objects.all()
+    nomes_das_categorias = [categoria.name for categoria in categorias]
+    if data['categoria'] not in nomes_das_categorias:
+        return "Invalido por Categoria"
