@@ -11,10 +11,10 @@ def evento(request):
     try:
         if request.method == 'POST':
             data = json.loads(request.body.decode('utf-8'))
-            obrigatory_fields = ['name', 'location', 'description', 'date', 'people', 'sponsors']
+            obrigatory_fields = ['name', 'location', 'description', 'date', 'people', 'sponsors', 'images']
             if any(field not in data for field in obrigatory_fields):
                 return JsonResponse({'Informações Faltando': 'Campos obrigatórios não foram preenchidos'}, status=400)
-            models.Event.objects.create(name=data['name'], location=data['location'], description=data['description'], date=data['date'], people=data['people'], sponsors=data['sponsors'])
+            models.Event.objects.create(name=data['name'], location=data['location'], description=data['description'], date=data['date'], people=data['people'], sponsors=data['sponsors'], images=data['images'])
             return JsonResponse({'Success': 'Event created sucessfully'}, status=201)
         
         if request.method == 'GET':
@@ -22,7 +22,7 @@ def evento(request):
             events = models.Event.objects.all()
             for event in events:
                 list_events.append({
-                  'id': event.id, 'name': event.name, 'location': event.location, 'description': event.description, 'date': event.date, 'people': event.people, 'sponsors': event.sponsors  
+                  'id': event.id, 'name': event.name, 'location': event.location, 'description': event.description, 'date': event.date, 'people': event.people, 'sponsors': event.sponsors, 'images': event.images  
                 })
             list_events = sorted(list_events, key=lambda x: x['id'])
             return JsonResponse({'Eventos': list_events})
@@ -36,7 +36,7 @@ def unique(request, id):
         if request.method == 'GET':
             event = get_object_or_404(models.Event, pk=id)
             resp = {
-                  'id': event.id, 'name': event.name, 'location': event.location, 'description': event.description, 'date': event.date, 'people': event.people, 'sponsors': event.sponsors  
+                  'id': event.id, 'name': event.name, 'location': event.location, 'description': event.description, 'date': event.date, 'people': event.people, 'sponsors': event.sponsors, 'images': event.images  
                 }
             return JsonResponse({'Evento': resp})
         
@@ -48,7 +48,7 @@ def unique(request, id):
         if request.method == 'PUT':
             event = models.Event.objects.get(id=id)
             data = json.loads(request.body.decode('utf-8'))
-            obrigatory_fields = ['name', 'location', 'description', 'date', 'people', 'sponsors']
+            obrigatory_fields = ['name', 'location', 'description', 'date', 'people', 'sponsors', 'images']
             if any(field not in data for field in obrigatory_fields):
                 return JsonResponse({'Informações Faltando': 'Campos obrigatórios não foram preenchidos'})
             for field in vars(event):

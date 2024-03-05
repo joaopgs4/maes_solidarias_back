@@ -7,7 +7,7 @@ class Event(models.Model):
     description = models.TextField(blank=True, null=True)
     date = models.DateField()
     people = models.IntegerField()
-    image = models.ImageField(upload_to="events", blank=True, null=True)
+    images = models.TextField(blank=True, null=True)
     sponsors = models.TextField()
 
     class Meta:

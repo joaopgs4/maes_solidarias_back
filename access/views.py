@@ -24,13 +24,14 @@ def users(request):
                 'date_joined': usuario.date_joined,
                 'last_acces': usuario.last_acces,
                 'user_type': usuario.user_type,
+                'images': usuario.images
             } for usuario in usuarios]
             
             return JsonResponse({'Usuarios': lista_usuarios})
         
         if request.method == 'POST':
             data = json.loads(request.body.decode('utf-8'))
-            essential_fields = ['first_name', 'last_name', 'email', 'birth', 'phone_number', 'gender']
+            essential_fields = ['first_name', 'last_name', 'email', 'birth', 'phone_number', 'gender', 'images']
             generos = [genero[0] for genero in models.Profile.Genders]
             user_emails = User.objects.values_list('email', flat=True)
 
@@ -48,7 +49,7 @@ def users(request):
             user.save()
             profile = models.Profile.objects.create(
                 user=user, first_name=data['first_name'], last_name=data['last_name'], email=data['email'], birth=data['birth'],
-                phone_number=data['phone_number'], gender=data['gender']
+                phone_number=data['phone_number'], gender=data['gender'], images=data['images']
             )
 
             return JsonResponse({'mensagem': f'Usuario de id {profile.id} cadastrado com sucesso'}, status=201)
@@ -75,6 +76,7 @@ def user_edit(request, id):
                 'date_joined': user_profile.date_joined,
                 'last_acces': user_profile.last_acces,
                 'user_type': user_profile.user_type,
+                'images': user.images
             }]
             return JsonResponse({'Usuario': resp}, status=200)
         
@@ -82,7 +84,7 @@ def user_edit(request, id):
             user_profile = get_object_or_404(models.Profile, pk=id)
             user = get_object_or_404(User, pk=id)
             data = json.loads(request.body.decode('utf-8'))
-            essential_fields = ['first_name', 'last_name', 'email', 'birth', 'phone_number', 'gender']
+            essential_fields = ['first_name', 'last_name', 'email', 'birth', 'phone_number', 'gender', 'images']
             generos = [genero[0] for genero in models.Profile.Genders]
             user_emails = User.objects.values_list('email', flat=True)
 
