@@ -7,9 +7,10 @@ import json
 
 #REMOVER ANTES DE POSTAR
 @csrf_exempt
-
-def cadastra_user(request):
+def usuario(request):
     try:
+
+        # CADASTRA USUARIO
         if request.method == 'POST':
             data = json.loads(request.body.decode('utf-8'))
             first_name = data.get('first_name')
@@ -39,6 +40,44 @@ def cadastra_user(request):
 
             return JsonResponse({'mensagem': 'Usuario cadastrado com sucesso'}, status=201)
         
-        # elif request.method == 'GET':
+        # DELETA USUARIO
+        elif request.method == 'DELETE':
+            data = json.loads(request.body.decode('utf-8'))
+            user = data.get('user')
+            profile = Profile.objects.get(user=user)
+            profile.delete()
+            return JsonResponse({'mensagem': 'Usuario deletado com sucesso'}, status=200)
+
+        # EDITA USUARIO (SOMENTE PARA ADM)
+        elif request.method == 'PUT':
+            data = json.loads(request.body.decode('utf-8'))
+            user = data.get('user')
+            profile = Profile.objects.get(user=user)
+
+            new_user_type = data.get('user_type')
+            profile.user_type = new_user_type
+            profile.save()
+            return JsonResponse({'mensagem': 'Usuario editado com sucesso'}, status=200)
+
+        elif request.method == 'GET':
+            usuarios = Profile.objects.all()
+            
+            lista_usuarios = [{
+                'user': usuario.user,
+                'first_name': usuario.first_name,
+                'last_name': usuario.last_name,
+                'email': usuario.email,
+                'birth': usuario.birth,
+                'phone_number': usuario.phone_number,
+                'gender': usuario.gender,
+                'date_joined': usuario.date_joined,
+                'last_acces': usuario.last_acces,
+                'profile_img': usuario.profile_img
+            } for usuario in usuarios]
+            
+            return JsonResponse({'usuarios': lista_usuarios})
+
+
     except Exception as e:
         return JsonResponse({'erro': str(e)}, status=500)
+    
