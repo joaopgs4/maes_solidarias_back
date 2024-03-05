@@ -46,9 +46,10 @@ def items(request):
             elif valido == "Invalido por Campos":
                 return JsonResponse({'Informações Faltando': 'Campos obrigatórios não foram preenchidos'}, status=400)
 
+            print(data['images'])
             Product.objects.create(
                 name=data['nome'], description=data['descricao'], price=data['preco'], stock=data['estoque'],
-                total_sold=0, category=Category.objects.get(name=data['categoria'])
+                total_sold=0, category=Category.objects.get(name=data['categoria']), images=data['images']
             )
 
             return JsonResponse({'mensagem': f'Produto {data["nome"]} criado com sucesso'}, status=201)
@@ -63,7 +64,8 @@ def items(request):
                 'preco': produto.price,
                 'estoque': produto.stock,
                 'total_vendido': produto.total_sold,
-                'categoria': produto.category.name
+                'categoria': produto.category.name,
+                'images': produto.images
             } for produto in produtos]
             lista_de_produtos = sorted(lista_de_produtos, key=lambda x: x['id'])
 
@@ -93,7 +95,8 @@ def items_id(request, id):
                 'preco': produto.price,
                 'estoque': produto.stock,
                 'total_vendido': produto.total_sold,
-                'categoria': produto.category.name
+                'categoria': produto.category.name,
+                'images': produto.image
             }
             return JsonResponse({'Produto': resp})
         
@@ -126,7 +129,7 @@ def items_id(request, id):
 
 #Função auxiliar para deixar o código mais clean
 def verifica_validez_produto(data):
-    obrigatory_fields = ['nome', 'descricao', 'preco', 'estoque', 'categoria']
+    obrigatory_fields = ['nome', 'descricao', 'preco', 'estoque', 'categoria', 'images']
     if any(field not in data for field in obrigatory_fields):
         return "Invalido por Campos"
 

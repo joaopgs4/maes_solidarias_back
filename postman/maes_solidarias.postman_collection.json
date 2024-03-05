@@ -51,7 +51,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"Doação Natal\",\n    \"location\": \"La na Avenida X, 60\",\n    \"description\": \"Doação de coisas das criançinhas para o Papai Noel\",\n    \"date\": \"2003-10-03\",\n    \"people\": 3,\n    \"sponsors\": \"Skoll, Brahma, Kinder, Marcelo Tas\"\n}",
+							"raw": "{\n    \"name\": \"Doação Natal\",\n    \"location\": \"La na Avenida X, 60\",\n    \"description\": \"Doação de coisas das criançinhas para o Papai Noel\",\n    \"date\": \"2003-10-03\",\n    \"people\": 3,\n    \"sponsors\": \"Skoll, Brahma, Kinder, Marcelo Tas\",\n    \"images\": []\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -83,7 +83,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"Doação Pascoa\",\n    \"location\": \"La na Avenida X, 60\",\n    \"description\": \"Doação de coisas das criançinhas para o Papai Noel\",\n    \"date\": \"2003-10-03\",\n    \"people\": 3,\n    \"sponsors\": \"Skoll, Brahma, Kinder, Marcelo Tas\"\n}",
+							"raw": "{\n    \"name\": \"Doação Pascoa\",\n    \"location\": \"La na Avenida X, 60\",\n    \"description\": \"Doação de coisas das criançinhas para o Papai Noel\",\n    \"date\": \"2003-10-03\",\n    \"people\": 3,\n    \"sponsors\": \"Skoll, Brahma, Kinder, Marcelo Tas\",\n    \"images\": []\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -123,7 +123,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:8000/events/4",
+							"raw": "http://127.0.0.1:8000/events/1",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -134,7 +134,7 @@
 							"port": "8000",
 							"path": [
 								"events",
-								"4"
+								"1"
 							]
 						}
 					},
@@ -257,7 +257,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"nome\": \"Lamparina\",\n    \"descricao\": \"Brilha\",\n    \"preco\": 14,\n    \"estoque\": 380,\n    \"categoria\": \"Decoração\"\n}",
+							"raw": "{\n    \"nome\": \"Lamparina\",\n    \"descricao\": \"Brilha\",\n    \"preco\": 14,\n    \"estoque\": 380,\n    \"categoria\": \"Decoração\",\n    \"images\": []\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -322,7 +322,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"nome\": \"Lamparina\",\n    \"descricao\": \"Brilha\",\n    \"preco\": 14,\n    \"estoque\": 5000,\n    \"categoria\": \"Decoração\"\n}",
+							"raw": "{\n    \"nome\": \"Lamparina\",\n    \"descricao\": \"Brilha\",\n    \"preco\": 14,\n    \"estoque\": 5000,\n    \"categoria\": \"Decoração\",\n    \"images\": []\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -460,7 +460,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"first_name\": \"Mario\",\n    \"last_name\": \"Santos\",\n    \"email\": \"mario@santosss.com\",\n    \"birth\": \"2003-10-03\",\n    \"phone_number\": \"5511123456789\",\n    \"gender\": \"Masculino\",\n    \"password1\": \"senha\",\n    \"password2\": \"senha\"\n}",
+							"raw": "{\n    \"first_name\": \"Mario\",\n    \"last_name\": \"Santos\",\n    \"email\": \"mario@sanstosss.com\",\n    \"birth\": \"2003-10-03\",\n    \"phone_number\": \"5511123456789\",\n    \"gender\": \"Masculino\",\n    \"password1\": \"senha\",\n    \"password2\": \"senha\",\n    \"images\": []\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -492,7 +492,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"first_name\": \"Mario\",\n    \"last_name\": \"Santana\",\n    \"email\": \"mario@santos.com\",\n    \"birth\": \"2003-10-03\",\n    \"phone_number\": \"5511123456789\",\n    \"gender\": \"Masculino\"\n}",
+							"raw": "{\n    \"first_name\": \"Mario\",\n    \"last_name\": \"Santana\",\n    \"email\": \"mario@santos.com\",\n    \"birth\": \"2003-10-03\",\n    \"phone_number\": \"5511123456789\",\n    \"gender\": \"Masculino\",\n    \"images\": []\n}",
 							"options": {
 								"raw": {
 									"language": "json"
