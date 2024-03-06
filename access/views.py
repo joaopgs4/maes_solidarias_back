@@ -2,6 +2,18 @@ from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
+
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework_simplejwt.tokens import RefreshToken
+from django.contrib.auth import authenticate
+from rest_framework.decorators import api_view, authentication_classes, permission_classes
+from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from django.contrib.auth.hashers import make_password
+
+
 from . import models
 import json
 
@@ -118,4 +130,32 @@ def user_edit(request, id):
     
 @csrf_exempt
 def login(request):
-    pass
+    try:
+        if request.method == "POST":
+            data = json.loads(request.body.decode('utf-8'))
+            email = data['email']
+            password = data['password']
+            user = User.objects.get(email=email)
+
+            if user.check_password(password):
+                refresh = RefreshToken.for_user(user)
+                return JsonResponse({
+                    'Refresh': str(refresh),
+                    'Authorization': str(refresh.access_token),
+                })
+            return JsonResponse({'Erro de Autenticação': "Verifique as credenciais informadas"}, status=500)
+
+    except Exception as e:
+        return JsonResponse({'erro': str(e)}, status=500)
+    
+@api_view(['GET'])
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated])
+def teste(request):
+    if request.user.is_authenticated:
+        user = request.user
+        user = get_object_or_404(models.Profile, email=user.email)
+
+        user = user.id
+        return JsonResponse({"Autenticado": user})
+    return JsonResponse({"Falha de Autenticação": "Faça login para prosseguir"})
