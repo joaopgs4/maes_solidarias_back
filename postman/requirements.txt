@@ -1,0 +1,657 @@
+{
+	"info": {
+		"_postman_id": "11312c34-abaf-4e6a-99c1-759c88e5f63c",
+		"name": "maes_solidarias",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "29274779"
+	},
+	"item": [
+		{
+			"name": "events",
+			"item": [
+				{
+					"name": "get events",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Doação Natalina\",\n    \"location\": \"La na Avenida Puta que te Pariu, 69\",\n    \"description\": \"Doação de coisas das criançinhas para o Papai Noel\",\n    \"date\": \"2001-09-11\",\n    \"people\": 3,\n    \"sponsors\": \"Skoll, Brahma, Jontex, Viagra\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/events/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"events",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "register event",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzA5NzYwNDI0LCJpYXQiOjE3MDk3NDk2MjQsImp0aSI6IjQ0ODA0ZjkyYTY5MDQ2MDE4MmUwM2M1MDVkZGNjOTQzIiwidXNlcl9pZCI6MX0.hnnz5P6tC4QvFDURUHqRpwDeZVTG-BflU4XpFW0s194",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Doação Natal\",\n    \"location\": \"La na Avenida X, 60\",\n    \"description\": \"Doação de coisas das criançinhas para o Papai Noel\",\n    \"date\": \"2003-10-03\",\n    \"people\": 3,\n    \"sponsors\": \"Skoll, Brahma, Kinder, Marcelo Tas\",\n    \"images\": []\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/events/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"events",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "edit event",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Doação Pascoa\",\n    \"location\": \"La na Avenida X, 60\",\n    \"description\": \"Doação de coisas das criançinhas para o Papai Noel\",\n    \"date\": \"2003-10-03\",\n    \"people\": 3,\n    \"sponsors\": \"Skoll, Brahma, Kinder, Marcelo Tas\",\n    \"images\": []\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/events/3",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"events",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete event",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Doação Natalina\",\n    \"location\": \"La na Avenida Puta que te Pariu, 69\",\n    \"description\": \"Doação de coisas das criançinhas para o Papai Noel\",\n    \"date\": \"2001-09-11\",\n    \"people\": 3,\n    \"sponsors\": \"Skoll, Brahma, Jontex, Marcelo Tas\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/events/1",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"events",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "products",
+			"item": [
+				{
+					"name": "get products",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Doação Natalina\",\n    \"location\": \"La na Avenida Puta que te Pariu, 69\",\n    \"description\": \"Doação de coisas das criançinhas para o Papai Noel\",\n    \"date\": \"2001-09-11\",\n    \"people\": 3,\n    \"sponsors\": \"Skoll, Brahma, Jontex, Viagra\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/bazar/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"bazar",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get categorias",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Doação Natalina\",\n    \"location\": \"La na Avenida Puta que te Pariu, 69\",\n    \"description\": \"Doação de coisas das criançinhas para o Papai Noel\",\n    \"date\": \"2001-09-11\",\n    \"people\": 3,\n    \"sponsors\": \"Skoll, Brahma, Jontex, Viagra\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/bazar/categoria",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"bazar",
+								"categoria"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get products id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Doação Natalina\",\n    \"location\": \"La na Avenida Puta que te Pariu, 69\",\n    \"description\": \"Doação de coisas das criançinhas para o Papai Noel\",\n    \"date\": \"2001-09-11\",\n    \"people\": 3,\n    \"sponsors\": \"Skoll, Brahma, Jontex, Viagra\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/bazar/1",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"bazar",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "register product",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nome\": \"Lamparina\",\n    \"descricao\": \"Brilha\",\n    \"preco\": 14,\n    \"estoque\": 380,\n    \"categoria\": \"Decoração\",\n    \"images\": []\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/bazar/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"bazar",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "register category",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nome\": \"Decoração\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/bazar/categoria/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"bazar",
+								"categoria",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "edit products",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzA5NzYwNDI0LCJpYXQiOjE3MDk3NDk2MjQsImp0aSI6IjQ0ODA0ZjkyYTY5MDQ2MDE4MmUwM2M1MDVkZGNjOTQzIiwidXNlcl9pZCI6MX0.hnnz5P6tC4QvFDURUHqRpwDeZVTG-BflU4XpFW0s194",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nome\": \"Lamparina\",\n    \"descricao\": \"Brilha\",\n    \"preco\": 14,\n    \"estoque\": 5000,\n    \"categoria\": \"Decoração\",\n    \"images\": []\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/bazar/1",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"bazar",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete products",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Doação Natalina\",\n    \"location\": \"La na Avenida Puta que te Pariu, 69\",\n    \"description\": \"Doação de coisas das criançinhas para o Papai Noel\",\n    \"date\": \"2001-09-11\",\n    \"people\": 3,\n    \"sponsors\": \"Skoll, Brahma, Jontex, Marcelo Tas\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/bazar/1",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"bazar",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "access",
+			"item": [
+				{
+					"name": "get users",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Doação Natalina\",\n    \"location\": \"La na Avenida Puta que te Pariu, 69\",\n    \"description\": \"Doação de coisas das criançinhas para o Papai Noel\",\n    \"date\": \"2001-09-11\",\n    \"people\": 3,\n    \"sponsors\": \"Skoll, Brahma, Jontex, Viagra\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/access",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"access"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get usuario",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Doação Natalina\",\n    \"location\": \"La na Avenida Puta que te Pariu, 69\",\n    \"description\": \"Doação de coisas das criançinhas para o Papai Noel\",\n    \"date\": \"2001-09-11\",\n    \"people\": 3,\n    \"sponsors\": \"Skoll, Brahma, Jontex, Viagra\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/access/1",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"access",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "register user",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"first_name\": \"Mario\",\n    \"last_name\": \"Santos\",\n    \"email\": \"mario@sanstosss.com\",\n    \"birth\": \"2003-10-03\",\n    \"phone_number\": \"5511123456789\",\n    \"gender\": \"Masculino\",\n    \"password1\": \"senha\",\n    \"password2\": \"senha\",\n    \"images\": []\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/access/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"access",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "edit user",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzA5NzYwNDI0LCJpYXQiOjE3MDk3NDk2MjQsImp0aSI6IjQ0ODA0ZjkyYTY5MDQ2MDE4MmUwM2M1MDVkZGNjOTQzIiwidXNlcl9pZCI6MX0.hnnz5P6tC4QvFDURUHqRpwDeZVTG-BflU4XpFW0s194",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"first_name\": \"Joel\",\n    \"last_name\": \"Santana\",\n    \"email\": \"mario@santoss.com\",\n    \"birth\": \"2003-10-03\",\n    \"phone_number\": \"5511123456789\",\n    \"gender\": \"Masculino\",\n    \"images\": []\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/access/3/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"access",
+								"3",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete user",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Doação Natalina\",\n    \"location\": \"La na Avenida Puta que te Pariu, 69\",\n    \"description\": \"Doação de coisas das criançinhas para o Papai Noel\",\n    \"date\": \"2001-09-11\",\n    \"people\": 3,\n    \"sponsors\": \"Skoll, Brahma, Jontex, Viagra\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/access/1/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"access",
+								"1",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login user",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"admin@admin.admin\",\n    \"password\": \"admin\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/access/login/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"access",
+								"login",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "test login user",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzA5NzYwNDI0LCJpYXQiOjE3MDk3NDk2MjQsImp0aSI6IjQ0ODA0ZjkyYTY5MDQ2MDE4MmUwM2M1MDVkZGNjOTQzIiwidXNlcl9pZCI6MX0.hnnz5P6tC4QvFDURUHqRpwDeZVTG-BflU4XpFW0s194",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/access/teste/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"access",
+								"teste",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "landing_page",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000"
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -25,13 +25,13 @@ def categoria(request):
                         return JsonResponse({'erro': 'O campo nome é obrigatório'}, status=400)
                     Category.objects.create(name=nome) 
                     return JsonResponse({'mensagem': f'Categoria {nome} criada com sucesso'}, status=201)
-                return JsonResponse({"Falha de Permissão": "Você não tem permissão de acesso à essa função"})
-            return JsonResponse({"Autorização Negada": "Faça login para prosseguir"})
+                return JsonResponse({"Falha de Permissão": "Você não tem permissão de acesso à essa função"}, status=401)
+            return JsonResponse({"Autorização Negada": "Faça login para prosseguir"}, status=401)
 
         elif request.method == 'GET':
             categorias = Category.objects.all()
             nomes_das_categorias = [categoria.name for categoria in categorias]
-            return JsonResponse({'nomes': nomes_das_categorias})
+            return JsonResponse({'nomes': nomes_das_categorias}, status=200)
         
     except Category.DoesNotExist:
         return JsonResponse({'erro': 'Categoria não encontrada'}, status=404)
@@ -57,7 +57,7 @@ def items(request):
                     #Verifica valiez da informações
                     valido = verifica_validez_produto(data)
                     if valido == "Invalido por Categoria":
-                        return JsonResponse({'Informações Invalidas': f'A categoria inserida não é valida.'})
+                        return JsonResponse({'Informações Invalidas': f'A categoria inserida não é valida.'}, status=400)
                     elif valido == "Invalido por Campos":
                         return JsonResponse({'Informações Faltando': 'Campos obrigatórios não foram preenchidos'}, status=400)
 
@@ -68,8 +68,8 @@ def items(request):
                     )
 
                     return JsonResponse({'mensagem': f'Produto {data["nome"]} criado com sucesso'}, status=201)
-                return JsonResponse({"Falha de Permissão": "Você não tem permissão de acesso à essa função"})
-            return JsonResponse({"Autorização Negada": "Faça login para prosseguir"})
+                return JsonResponse({"Falha de Permissão": "Você não tem permissão de acesso à essa função"}, status=401)
+            return JsonResponse({"Autorização Negada": "Faça login para prosseguir"}, status=401)
 
         elif request.method == 'GET':
             produtos = Product.objects.all()
@@ -87,7 +87,7 @@ def items(request):
             lista_de_produtos = sorted(lista_de_produtos, key=lambda x: x['id'])
 
             
-            return JsonResponse({'produtos': lista_de_produtos})
+            return JsonResponse({'produtos': lista_de_produtos}, status=200)
 
     except Product.DoesNotExist:
         return JsonResponse({'erro': 'Produto não encontrado'}, status=404)
@@ -117,7 +117,7 @@ def items_id(request, id):
                 'categoria': produto.category.name,
                 'images': produto.images
             }
-            return JsonResponse({'Produto': resp})
+            return JsonResponse({'Produto': resp}, status=200)
         if request.user.is_authenticated:
             user = request.user
             if user.is_superuser:
@@ -128,7 +128,7 @@ def items_id(request, id):
                     #Verifica valiez da informações
                     valido = verifica_validez_produto(data)
                     if valido == "Invalido por Categoria":
-                        return JsonResponse({'Informações Invalidas': f'A categoria inserida não é valida.'})
+                        return JsonResponse({'Informações Invalidas': f'A categoria inserida não é valida.'}, status=400)
                     elif valido == "Invalido por Campos":
                         return JsonResponse({'Informações Faltando': 'Campos obrigatórios não foram preenchidos'}, status=400)
                     
@@ -136,16 +136,16 @@ def items_id(request, id):
                         if field in data:
                             setattr(produto, field, data[field])
                         produto.save()
-                    return JsonResponse({'Produto': f"Produto de ID {id} foi editado com sucesso"})
+                    return JsonResponse({'Produto': f"Produto de ID {id} foi editado com sucesso"}, status=200)
 
                 if request.method == 'DELETE':
                     produto = Product.objects.get(id=id)
                     produto.delete()
-                    return JsonResponse({'Produto': f"Produto de ID {id} foi deletado"})
+                    return JsonResponse({'Produto': f"Produto de ID {id} foi deletado"}, status=200)
             else:
-                return JsonResponse({"Falha de Permissão": "Você não tem permissão de acesso à essa função"})
+                return JsonResponse({"Falha de Permissão": "Você não tem permissão de acesso à essa função"}, status=401)
         else:
-            return JsonResponse({"Autorização Negada": "Faça login para prosseguir"})
+            return JsonResponse({"Autorização Negada": "Faça login para prosseguir"}, status=401)
 
 
 
