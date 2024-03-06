@@ -1,23 +1,33 @@
-from django.shortcuts import render
-from django.http import JsonResponse
+from rest_framework.decorators import api_view, authentication_classes
+from rest_framework_simplejwt.authentication import JWTAuthentication
 from django.views.decorators.csrf import csrf_exempt
+from rest_framework.decorators import api_view
 from .models import Category, Product
-import json
+from django.http import JsonResponse
 from django.db import IntegrityError
+import json
+
 
 #REMOVER ANTES DE POSTAR
 @csrf_exempt
 #Funcao que faz os metodos post,get e delete para as categorias
+@api_view(['GET', 'POST'])
+@authentication_classes([JWTAuthentication])
 def categoria(request):
     try:
         if request.method == 'POST':
-            data = json.loads(request.body.decode('utf-8'))
-            nome = data.get('nome')  
-            if not nome:  
-                return JsonResponse({'erro': 'O campo nome é obrigatório'}, status=400)
-            Category.objects.create(name=nome) 
-            return JsonResponse({'mensagem': f'Categoria {nome} criada com sucesso'}, status=201)
-        
+            if request.user.is_authenticated:
+                user = request.user
+                if user.is_superuser:
+                    data = json.loads(request.body.decode('utf-8'))
+                    nome = data.get('nome')  
+                    if not nome:  
+                        return JsonResponse({'erro': 'O campo nome é obrigatório'}, status=400)
+                    Category.objects.create(name=nome) 
+                    return JsonResponse({'mensagem': f'Categoria {nome} criada com sucesso'}, status=201)
+                return JsonResponse({"Falha de Permissão": "Você não tem permissão de acesso à essa função"})
+            return JsonResponse({"Autorização Negada": "Faça login para prosseguir"})
+
         elif request.method == 'GET':
             categorias = Category.objects.all()
             nomes_das_categorias = [categoria.name for categoria in categorias]
@@ -34,25 +44,32 @@ def categoria(request):
 
 #funcao que adiciona, deleta, atualiza e lista os produtos
 @csrf_exempt
+@api_view(['GET', 'POST'])
+@authentication_classes([JWTAuthentication])
 def items(request):
     try:
         if request.method == 'POST':
-            data = json.loads(request.body.decode('utf-8'))
+            if request.user.is_authenticated:
+                user = request.user
+                if user.is_superuser:
+                    data = json.loads(request.body.decode('utf-8'))
 
-            #Verifica valiez da informações
-            valido = verifica_validez_produto(data)
-            if valido == "Invalido por Categoria":
-                return JsonResponse({'Informações Invalidas': f'A categoria inserida não é valida.'})
-            elif valido == "Invalido por Campos":
-                return JsonResponse({'Informações Faltando': 'Campos obrigatórios não foram preenchidos'}, status=400)
+                    #Verifica valiez da informações
+                    valido = verifica_validez_produto(data)
+                    if valido == "Invalido por Categoria":
+                        return JsonResponse({'Informações Invalidas': f'A categoria inserida não é valida.'})
+                    elif valido == "Invalido por Campos":
+                        return JsonResponse({'Informações Faltando': 'Campos obrigatórios não foram preenchidos'}, status=400)
 
-            print(data['images'])
-            Product.objects.create(
-                name=data['nome'], description=data['descricao'], price=data['preco'], stock=data['estoque'],
-                total_sold=0, category=Category.objects.get(name=data['categoria']), images=data['images']
-            )
+                    print(data['images'])
+                    Product.objects.create(
+                        name=data['nome'], description=data['descricao'], price=data['preco'], stock=data['estoque'],
+                        total_sold=0, category=Category.objects.get(name=data['categoria']), images=data['images']
+                    )
 
-            return JsonResponse({'mensagem': f'Produto {data["nome"]} criado com sucesso'}, status=201)
+                    return JsonResponse({'mensagem': f'Produto {data["nome"]} criado com sucesso'}, status=201)
+                return JsonResponse({"Falha de Permissão": "Você não tem permissão de acesso à essa função"})
+            return JsonResponse({"Autorização Negada": "Faça login para prosseguir"})
 
         elif request.method == 'GET':
             produtos = Product.objects.all()
@@ -84,6 +101,8 @@ def items(request):
         return JsonResponse({'erro': str(e)}, status=500)
 
 @csrf_exempt
+@api_view(['GET', 'PUT', 'DELETE'])
+@authentication_classes([JWTAuthentication])
 def items_id(request, id):
     try:
         if request.method == 'GET':
@@ -96,31 +115,38 @@ def items_id(request, id):
                 'estoque': produto.stock,
                 'total_vendido': produto.total_sold,
                 'categoria': produto.category.name,
-                'images': produto.image
+                'images': produto.images
             }
             return JsonResponse({'Produto': resp})
-        
-        if request.method == 'PUT':
-            produto = Product.objects.get(id=id)
-            data = json.loads(request.body.decode('utf-8'))
+        if request.user.is_authenticated:
+            user = request.user
+            if user.is_superuser:
+                if request.method == 'PUT':
+                    produto = Product.objects.get(id=id)
+                    data = json.loads(request.body.decode('utf-8'))
 
-            #Verifica valiez da informações
-            valido = verifica_validez_produto(data)
-            if valido == "Invalido por Categoria":
-                return JsonResponse({'Informações Invalidas': f'A categoria inserida não é valida.'})
-            elif valido == "Invalido por Campos":
-                return JsonResponse({'Informações Faltando': 'Campos obrigatórios não foram preenchidos'}, status=400)
-            
-            for field in vars(produto):
-                if field in data:
-                    setattr(produto, field, data[field])
-                produto.save()
-            return JsonResponse({'Produto': f"Produto de ID {id} foi editado com sucesso"})
+                    #Verifica valiez da informações
+                    valido = verifica_validez_produto(data)
+                    if valido == "Invalido por Categoria":
+                        return JsonResponse({'Informações Invalidas': f'A categoria inserida não é valida.'})
+                    elif valido == "Invalido por Campos":
+                        return JsonResponse({'Informações Faltando': 'Campos obrigatórios não foram preenchidos'}, status=400)
+                    
+                    for field in vars(produto):
+                        if field in data:
+                            setattr(produto, field, data[field])
+                        produto.save()
+                    return JsonResponse({'Produto': f"Produto de ID {id} foi editado com sucesso"})
 
-        if request.method == 'DELETE':
-            produto = Product.objects.get(id=id)
-            produto.delete()
-            return JsonResponse({'Produto': f"Produto de ID {id} foi deletado"})
+                if request.method == 'DELETE':
+                    produto = Product.objects.get(id=id)
+                    produto.delete()
+                    return JsonResponse({'Produto': f"Produto de ID {id} foi deletado"})
+            else:
+                return JsonResponse({"Falha de Permissão": "Você não tem permissão de acesso à essa função"})
+        else:
+            return JsonResponse({"Autorização Negada": "Faça login para prosseguir"})
+
 
 
     except Exception as e:
