@@ -13,26 +13,33 @@ import json
 
 #REMOVER ANTES DE POSTAR
 @csrf_exempt
+@api_view(['GET', 'POST'])
+@authentication_classes([JWTAuthentication])
 def users(request):
     try:
         if request.method == 'GET':
-            usuarios = models.Profile.objects.all()
-            
-            lista_usuarios = [{
-                'id': usuario.id,
-                'first_name': usuario.first_name,
-                'last_name': usuario.last_name,
-                'email': usuario.email,
-                'birth': usuario.birth,
-                'phone_number': usuario.phone_number,
-                'gender': usuario.gender,
-                'date_joined': usuario.date_joined,
-                'last_acces': usuario.last_acces,
-                'user_type': usuario.user_type,
-                'images': usuario.images
-            } for usuario in usuarios]
-            
-            return JsonResponse({'Usuarios': lista_usuarios})
+            if request.user.is_authenticated:
+                user = request.user
+                if user.is_superuser:
+                    usuarios = models.Profile.objects.all()
+                    
+                    lista_usuarios = [{
+                        'id': usuario.id,
+                        'first_name': usuario.first_name,
+                        'last_name': usuario.last_name,
+                        'email': usuario.email,
+                        'birth': usuario.birth,
+                        'phone_number': usuario.phone_number,
+                        'gender': usuario.gender,
+                        'date_joined': usuario.date_joined,
+                        'last_acces': usuario.last_acces,
+                        'user_type': usuario.user_type,
+                        'images': usuario.images
+                    } for usuario in usuarios]
+                    
+                    return JsonResponse({'Usuarios': lista_usuarios}, status=200)
+                return JsonResponse({"Falha de Permissão": "Você não tem permissão de acesso à essa função"}, status=401)
+            return JsonResponse({"Autorização Negada": "Faça login para prosseguir"}, status=401)
         
         if request.method == 'POST':
             data = json.loads(request.body.decode('utf-8'))
@@ -115,7 +122,7 @@ def user_edit(request, id):
                     user.email = data['email']
                     user.save()
 
-                    return JsonResponse({"Usuario": f'Usuario de ID {id} editado com sucesso.'})
+                    return JsonResponse({"Usuario": f'Usuario de ID {id} editado com sucesso.'}, status=200)
 
                 if request.method == 'DELETE':
                     user_profile = get_object_or_404(models.Profile, pk=id)
@@ -123,9 +130,9 @@ def user_edit(request, id):
                     user_profile.delete()
                     user.delete()
 
-                    return JsonResponse({'Usuario': f"Usuario de ID {id} foi deletado"})
-            return JsonResponse({"Falha de Permissão": "Você não tem permissão de acesso à essa função"})
-        return JsonResponse({"Autorização Negada": "Faça login para prosseguir"})
+                    return JsonResponse({'Usuario': f"Usuario de ID {id} foi deletado"}, status=200)
+            return JsonResponse({"Falha de Permissão": "Você não tem permissão de acesso à essa função"}, status=401)
+        return JsonResponse({"Autorização Negada": "Faça login para prosseguir"}, status=401)
         
     except Exception as e:
         return JsonResponse({'erro': str(e)}, status=500)
@@ -145,19 +152,7 @@ def login(request):
                     'Refresh': str(refresh),
                     'Authorization': str(refresh.access_token),
                 })
-            return JsonResponse({'Erro de Autenticação': "Verifique as credenciais informadas"}, status=500)
+            return JsonResponse({'Erro de Autenticação': "Verifique as credenciais informadas"}, status=400)
 
     except Exception as e:
         return JsonResponse({'erro': str(e)}, status=500)
-    
-@api_view(['GET'])
-@authentication_classes([JWTAuthentication])
-@permission_classes([IsAuthenticated])
-def teste(request):
-    if request.user.is_authenticated:
-        user = request.user
-        user = get_object_or_404(models.Profile, email=user.email)
-
-        user = user.id
-        return JsonResponse({"Autenticado": user})
-    return JsonResponse({"Falha de Autenticação": "Faça login para prosseguir"})
