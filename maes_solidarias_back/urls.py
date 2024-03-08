@@ -17,6 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+#Paths de requisições da API, redireciona para seus respectivos arquivos em seus apps
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('bazar/', include('store.urls')),

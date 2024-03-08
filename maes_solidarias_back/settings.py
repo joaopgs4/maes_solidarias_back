@@ -33,7 +33,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    #Jazzmin TEM que ser o primeiro app
+    #Jazzmin TEM que ser o primeiro app, refaz a tela de admin para ser mais funcional
     'jazzmin',
 
     'rest_framework',

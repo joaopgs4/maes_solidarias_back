@@ -23,6 +23,7 @@ def evento(request):
                     if any(field not in data for field in obrigatory_fields):
                         return JsonResponse({'Informações Faltando': 'Campos obrigatórios não foram preenchidos'}, status=400)
                     models.Event.objects.create(name=data['name'], location=data['location'], description=data['description'], date=data['date'], people=data['people'], sponsors=data['sponsors'], images=data['images'])
+                   
                     return JsonResponse({'Success': 'Event created sucessfully'}, status=201)
                 return JsonResponse({"Falha de Permissão": "Você não tem permissão de acesso à essa função"}, status=401)
             return JsonResponse({"Autorização Negada": "Faça login para prosseguir"}, status=401)

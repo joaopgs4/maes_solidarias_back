@@ -1,6 +1,6 @@
 from django.db import models
-# Create your models here.
 
+# Cria o modelo de evento, as imagens estão como text_field para salvar em base x64 por eficiencia
 class Event(models.Model):
     name = models.CharField(max_length=255)
     location = models.CharField(max_length=255)
