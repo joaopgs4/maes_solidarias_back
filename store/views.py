@@ -8,7 +8,8 @@ from django.db import IntegrityError
 import json
 
 
-#REMOVER ANTES DE POSTAR
+# ! REMOVER ANTES DE PUBLICAR PARA PRODUÇÃO !
+#Exclui a necessidade de tokens csrf de segurança em requisições POST/PUT do django. Facilita na testagem.
 @csrf_exempt
 #Funcao que faz os metodos post,get e delete para as categorias
 @api_view(['GET', 'POST'])
@@ -16,6 +17,7 @@ import json
 def categoria(request):
     try:
         if request.method == 'POST':
+            #Verifica o login do usuario, tal como seu status de Admin para poder editar suas informações
             if request.user.is_authenticated:
                 user = request.user
                 if user.is_superuser:
@@ -24,9 +26,12 @@ def categoria(request):
                     if not nome:  
                         return JsonResponse({'erro': 'O campo nome é obrigatório'}, status=400)
                     Category.objects.create(name=nome) 
+
+                    #Respostas da função
                     return JsonResponse({'mensagem': f'Categoria {nome} criada com sucesso'}, status=201)
                 return JsonResponse({"Falha de Permissão": "Você não tem permissão de acesso à essa função"}, status=401)
             return JsonResponse({"Autorização Negada": "Faça login para prosseguir"}, status=401)
+
 
         elif request.method == 'GET':
             categorias = Category.objects.all()
@@ -73,7 +78,7 @@ def items(request):
 
         elif request.method == 'GET':
             produtos = Product.objects.all()
-            
+            #Formata os produtos para uma lista python, pois json nao suporta objetos. 
             lista_de_produtos = [{
                 'id': produto.id,
                 'nome': produto.name,
@@ -153,7 +158,7 @@ def items_id(request, id):
         return JsonResponse({'erro': str(e)}, status=500)
         
 
-#Função auxiliar para deixar o código mais clean
+#Função auxiliar para deixar o código mais compacto. Verifica a validez das informações inseridas 
 def verifica_validez_produto(data):
     obrigatory_fields = ['nome', 'descricao', 'preco', 'estoque', 'categoria', 'images']
     if any(field not in data for field in obrigatory_fields):
